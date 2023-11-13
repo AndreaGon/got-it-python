@@ -61,8 +61,6 @@ class lostTable(Resource):
             requested = {"table_name" : "lost_items", "table_content" : content}
             return jsonify(requested)
 
-
-
 class foundTable(Resource):
     def get(self):
         cursor.execute("SELECT * FROM found_items")
@@ -101,7 +99,6 @@ class foundTable(Resource):
 
             requested = {"table_name" : "found_items", "table_content" : content}
             return jsonify(requested)
-
 
 class matchTable(Resource):
     def get(self):
@@ -153,8 +150,52 @@ class startMatch(Resource):
         return jsonify({"status" : 200})
 
 
+# lau wan jing: manage users feature
+parser = reqparse.RequestParser()
+parser.add_argument('user_id', type=int, required=True, help='User ID is required')
+parser.add_argument('activate', type=bool)
+parser.add_argument('deactivate', type=bool)
+
+class manageUsers(Resource):
+    def get(self):
+        cursor.execute("SELECT * FROM users")
+        column = cursor.column_names
+        data = cursor.fetchall()
+        content = []
+        subcontent = {}
+        for datum in data:
+            for x, y in zip(column, datum):
+                subcontent[x] = y
+            content.append(subcontent)
+            subcontent = {}
+
+        requested = {"table_name": "users", "table_content": content}
+        return jsonify(requested)
+
+    def post(self):
+        args = parser.parse_args()
+        user_id = args['user_id']
+
+        if args['activate']:
+            status = 1
+        elif args['deactivate']:
+            status = 0
+        else:
+            # Handle invalid request (neither activate nor deactivate specified)
+            abort(400, message='Invalid request. Please specify activate or deactivate.')
+
+        try:
+            cursor.execute("UPDATE users SET status = %s WHERE ID = %s", (status, user_id))
+            db.commit()
+            return {"status": "success"}
+        except Exception as e:
+            # Handle database errors
+            db.rollback()
+            abort(500, message=f"Error: {str(e)}")
 
 
+
+api.add_resource(manageUsers, "/api/manageusers")
 api.add_resource(lostTable, "/api/lost")
 api.add_resource(foundTable, "/api/found")
 api.add_resource(startMatch, "/api/startmatch")
