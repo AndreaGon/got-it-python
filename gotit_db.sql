@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2023 at 02:35 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Generation Time: Nov 17, 2023 at 03:46 AM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -80,17 +80,94 @@ CREATE TABLE `matched_items` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `permissions`
+--
+
+CREATE TABLE `permissions` (
+  `ID` int(11) UNSIGNED NOT NULL,
+  `permission_name` char(50) NOT NULL,
+  `permission_description` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `permissions`
+--
+
+INSERT INTO `permissions` (`ID`, `permission_name`, `permission_description`) VALUES
+(1, 'add_lost_item', 'Can add lost items'),
+(2, 'add_found_item', 'Can add found item'),
+(3, 'resolve_report', 'Can resolve reported lost or found items'),
+(4, 'view_users', 'Can view users'),
+(5, 'view_admins', 'Can view admins'),
+(7, 'manage_users', 'Can activate or deactivate users'),
+(8, 'add_admins', 'Can add admins'),
+(9, 'delete_admins', 'Can delete admins');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `roles`
+--
+
+CREATE TABLE `roles` (
+  `ID` int(11) UNSIGNED NOT NULL,
+  `role_name` char(50) NOT NULL,
+  `role_description` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`ID`, `role_name`, `role_description`) VALUES
+(1, 'user', 'User role'),
+(2, 'admin', 'Admin role'),
+(3, 'superadmin', 'Superadmin role');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `role_permission`
+--
+
+CREATE TABLE `role_permission` (
+  `ID` int(11) UNSIGNED NOT NULL,
+  `roleId` int(11) UNSIGNED NOT NULL,
+  `permissionId` int(11) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `role_permission`
+--
+
+INSERT INTO `role_permission` (`ID`, `roleId`, `permissionId`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 2, 3),
+(5, 2, 4),
+(6, 2, 7),
+(7, 3, 5),
+(8, 3, 8),
+(9, 3, 9),
+(10, 3, 4),
+(11, 3, 7),
+(14, 3, 3);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
-  `ID` int(10) UNSIGNED NOT NULL,
+  `ID` int(11) UNSIGNED NOT NULL,
   `email` varchar(100) NOT NULL,
   `contact_no` bigint(50) NOT NULL,
   `address` varchar(100) DEFAULT NULL,
   `username` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `role` char(50) NOT NULL,
+  `roleId` int(11) UNSIGNED NOT NULL,
   `status` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -98,11 +175,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`ID`, `email`, `contact_no`, `address`, `username`, `password`, `role`, `status`) VALUES
-(8, 'admin@mail.com', 2147483647, 'Sample Address', 'Admin', 'admin123', 'admin', 1),
-(15, 'emma@mail.com', 12345678, 'Sample Address', 'Emma Jones', 'emma123', 'user', 1),
-(16, 'superadmin@mail.com', 12674824, 'Sample Address 2', 'Superadmin', 'superadmin123', 'superadmin', 1),
-(17, 'qq@mail.com', 123456789, 'sample address', 'QQ', 'qq123', 'user', 1);
+INSERT INTO `users` (`ID`, `email`, `contact_no`, `address`, `username`, `password`, `roleId`, `status`) VALUES
+(21, 'emma@mail.com', 609675746363, 'ABC Condominium', 'Emma Jones', 'emma123', 1, 1),
+(23, 'superadmin@mail.com', 123456785, 'Sample Address', 'superadmin', 'superadmin123', 3, 1);
 
 --
 -- Indexes for dumped tables
@@ -131,10 +206,31 @@ ALTER TABLE `matched_items`
   ADD KEY `found_id` (`found_id`);
 
 --
+-- Indexes for table `permissions`
+--
+ALTER TABLE `permissions`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `role_permission`
+--
+ALTER TABLE `role_permission`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `role` (`roleId`),
+  ADD KEY `permission` (`permissionId`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `test` (`roleId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -144,13 +240,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `found_items`
 --
 ALTER TABLE `found_items`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `lost_items`
 --
 ALTER TABLE `lost_items`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `matched_items`
@@ -159,10 +255,28 @@ ALTER TABLE `matched_items`
   MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
+-- AUTO_INCREMENT for table `permissions`
+--
+ALTER TABLE `permissions`
+  MODIFY `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `role_permission`
+--
+ALTER TABLE `role_permission`
+  MODIFY `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Constraints for dumped tables
@@ -186,6 +300,19 @@ ALTER TABLE `lost_items`
 ALTER TABLE `matched_items`
   ADD CONSTRAINT `matched_items_ibfk_1` FOREIGN KEY (`lost_id`) REFERENCES `lost_items` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `matched_items_ibfk_2` FOREIGN KEY (`found_id`) REFERENCES `found_items` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `role_permission`
+--
+ALTER TABLE `role_permission`
+  ADD CONSTRAINT `permission` FOREIGN KEY (`permissionId`) REFERENCES `permissions` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `role` FOREIGN KEY (`roleId`) REFERENCES `roles` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `test` FOREIGN KEY (`roleId`) REFERENCES `roles` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
