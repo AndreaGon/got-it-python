@@ -38,13 +38,16 @@ class lostTable(Resource):
             content.append(subcontent)
             subcontent = {}
 
+        
         requested = {"table_name" : "lost_items", "table_content" : content}
+        
         return jsonify(requested)
 
-    def post(self):
+    def post(self):        
         query = parser.parse_args()
+        print(query)
         if query['status'] != None:
-            cursor.execute("SELECT * FROM lost_items WHERE status = " + "'" + query['status'] + "'")
+            cursor.execute("SELECT * FROM lost_items WHERE status = " + "'" + str(query['status']) + "'")
 
             column = cursor.column_names
             data = cursor.fetchall()
@@ -58,8 +61,9 @@ class lostTable(Resource):
                 content.append(subcontent)
                 subcontent = {}
 
-            requested = {"table_name" : "lost_items", "table_content" : content}
-            return jsonify(requested)
+        requested = {"table_name" : "lost_items", "table_content" : content}
+        
+        return jsonify(requested)
 
 class foundTable(Resource):
     def get(self):
@@ -82,7 +86,7 @@ class foundTable(Resource):
     def post(self):
         query = parser.parse_args()
         if query['status'] != None:
-            cursor.execute("SELECT * FROM found_items WHERE status = " + "'" + query['status'] + "'")
+            cursor.execute("SELECT * FROM found_items WHERE status = " + "'" + str(query['status']) + "'")
 
 
             column = cursor.column_names
@@ -121,13 +125,14 @@ class startMatch(Resource):
         lostUrl = "http://127.0.0.1:5000/api/lost"
         foundUrl = "http://127.0.0.1:5000/api/found"
         #headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36'}
+        headers = {"Content-Type": "application/json"}
         param = {'status' : 0}
-        requestLostData = requests.post(lostUrl, data=param)
-        requestFoundData = requests.post(foundUrl, data=param)
+        parser.add_argument('status', type=int)
+        requestLostData = requests.post(lostUrl, json=param, headers=headers)
+        requestFoundData = requests.post(foundUrl, json=param, headers=headers)
 
         lostData = requestLostData.json()
-        foundData = requestFoundData.json()
-        print(foundData)
+        foundData = requestFoundData.json()        
         content = []
         for ldatum in lostData['table_content']:
             for fdatum in foundData['table_content']:
@@ -152,7 +157,7 @@ class startMatch(Resource):
 
 # lau wan jing: manage users feature
 parser = reqparse.RequestParser()
-parser.add_argument('user_id', type=int, required=True, help='User ID is required')
+parser.add_argument('user_id', type=int)
 parser.add_argument('activate', type=bool)
 parser.add_argument('deactivate', type=bool)
 
