@@ -181,7 +181,7 @@ INSERT INTO `users` (`ID`, `email`, `contact_no`, `address`, `username`, `passwo
 (3, 'jiawei@gmail.com', '0123456789', 'Penang', 'Jia Wei', '$2y$10$BmTJDXwFvAR.26GA.ldbP.5JO.vFQZUrhOU4ZHuOW8UVggtGxyso2', 1, 1),
 (4, 'andrea@gmail.com', '0123456789', 'Penang', 'Andrea', '$2y$10$BV8lklQQuZfTxZH1lHiESeo0IKlYrUZojLTEYcDMCuRpbSCJa1pVW', 1, 1),
 (5, 'zeyuen@gmail.com', '0123456789', 'Penang', 'Ze Yuen', '$2y$10$PF91MNNnlneuiCsyvA.8V.jOomA/wdCHDZnrtEkXpLmWaiMikJ.V2', 1, 1),
-(6, 'wanjing@gmail.com', '0123456789', 'Penang', 'Wan Jing', '$2y$10$4ZuMD/MEPDagvGS0j3ugouENcXzeiuO1cGm8T8U6t9NFadr9GuMf6', 1, 1),
+(6, 'wanjing@gmail.com', '0123456789', 'Penang', 'Wan Jing', '$2y$10$4ZuMD/MEPDagvGS0j3ugouENcXzeiuO1cGm8T8U6t9NFadr9GuMf6', 1, 1);
 
 --
 -- Indexes for dumped tables
