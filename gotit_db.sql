@@ -176,7 +176,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`ID`, `email`, `contact_no`, `address`, `username`, `password`, `roleId`, `status`) VALUES
-(1, 'superadmin@mail.com', '0123456789', 'Sample Address', 'superadmin', '$2y$10$i/J3cRQ6/T.9z8Wwllnvj.E4BvOLnL/b8EQHD2hZreWnXRVqK9Y5u', 3, 1);
+(1, 'superadmin@mail.com', '0123456789', 'Sample Address', 'superadmin', '$2y$10$i/J3cRQ6/T.9z8Wwllnvj.E4BvOLnL/b8EQHD2hZreWnXRVqK9Y5u', 3, 1),
+(2, 'pmliew@gmail.com', '0123456789', 'Penang', 'Endairion', '$2y$10$t4OEAVLxxhMLyPbcRlYUPO41D2FtgKXDkRnBQsxOO58RxtP3p.cYi', 1, 1),
+(3, 'jiawei@gmail.com', '0123456789', 'Penang', 'Jia Wei', '$2y$10$BmTJDXwFvAR.26GA.ldbP.5JO.vFQZUrhOU4ZHuOW8UVggtGxyso2', 1, 1),
+(4, 'andrea@gmail.com', '0123456789', 'Penang', 'Andrea', '$2y$10$BV8lklQQuZfTxZH1lHiESeo0IKlYrUZojLTEYcDMCuRpbSCJa1pVW', 1, 1),
+(5, 'zeyuen@gmail.com', '0123456789', 'Penang', 'Ze Yuen', '$2y$10$PF91MNNnlneuiCsyvA.8V.jOomA/wdCHDZnrtEkXpLmWaiMikJ.V2', 1, 1),
+(6, 'wanjing@gmail.com', '0123456789', 'Penang', 'Wan Jing', '$2y$10$4ZuMD/MEPDagvGS0j3ugouENcXzeiuO1cGm8T8U6t9NFadr9GuMf6', 1, 1),
 
 --
 -- Indexes for dumped tables
