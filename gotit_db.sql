@@ -163,7 +163,7 @@ INSERT INTO `role_permission` (`ID`, `roleId`, `permissionId`) VALUES
 CREATE TABLE `users` (
   `ID` int(11) UNSIGNED NOT NULL,
   `email` varchar(100) NOT NULL,
-  `contact_no` bigint(50) NOT NULL,
+  `contact_no` varchar(20) NOT NULL,
   `address` varchar(100) DEFAULT NULL,
   `username` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
@@ -176,8 +176,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`ID`, `email`, `contact_no`, `address`, `username`, `password`, `roleId`, `status`) VALUES
-(21, 'emma@mail.com', 609675746363, 'ABC Condominium', 'Emma Jones', 'emma123', 1, 1),
-(23, 'superadmin@mail.com', 123456785, 'Sample Address', 'superadmin', 'superadmin123', 3, 1);
+(1, 'superadmin@mail.com', '0123456789', 'Sample Address', 'superadmin', '$2y$10$i/J3cRQ6/T.9z8Wwllnvj.E4BvOLnL/b8EQHD2hZreWnXRVqK9Y5u', 3, 1);
 
 --
 -- Indexes for dumped tables
